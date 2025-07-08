@@ -18,5 +18,9 @@ app.post('/api/echo', (req, res) => {
 const pdfRoute = require('./routes/pdf');
 app.use('/api', pdfRoute);
 
+const ageRoute = require('./routes/age');
+app.use('/api', ageRoute);
+
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
