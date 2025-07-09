@@ -1,29 +1,46 @@
+import { useState } from 'react';
+
 export default function Navbar() {
-    return (
-      <nav className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          {/* Logo / Brand */}
-          <a href="/" className="text-2xl font-extrabold text-blue-700 tracking-wide">
-            EasyKaaj
-          </a>
-  
-          {/* Navigation Links */}
-          <div className="hidden md:flex gap-6">
-            <a href="#" className="text-gray-700 hover:text-blue-700 font-medium transition duration-200">Home</a>
-            <a href="#" className="text-gray-700 hover:text-blue-700 font-medium transition duration-200">Tools</a>
-            <a href="#" className="text-gray-700 hover:text-blue-700 font-medium transition duration-200">About</a>
-            <a href="#" className="text-gray-700 hover:text-blue-700 font-medium transition duration-200">Contact</a>
-          </div>
-  
-          {/* Optional Mobile Menu Icon (future feature) */}
-          <div className="md:hidden">
-            <button className="text-gray-700 hover:text-blue-700">
-              {/* You can later add hamburger icon here */}
-              ☰
-            </button>
-          </div>
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <nav className="bg-white shadow-sm sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        {/* Logo / Brand */}
+        <a href="/" className="text-2xl font-extrabold text-blue-700 tracking-wide">
+          EasyKaaj
+        </a>
+
+        {/* Desktop Nav Links */}
+        <div className="hidden md:flex gap-6">
+          <a href="/" className="text-gray-700 hover:text-blue-700 font-medium transition duration-200">Home</a>
+          <a href="/tools" className="text-gray-700 hover:text-blue-700 font-medium transition duration-200">Tools</a>
+          <a href="/about" className="text-gray-700 hover:text-blue-700 font-medium transition duration-200">About</a>
+          <a href="/contact" className="text-gray-700 hover:text-blue-700 font-medium transition duration-200">Contact</a>
         </div>
-      </nav>
-    )
-  }
-  
+
+        {/* Mobile Hamburger Button */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-gray-700 hover:text-blue-700 focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            {/* Hamburger icon */}
+            ☰
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu: show only if isOpen */}
+      {isOpen && (
+        <div className="md:hidden bg-white px-6 pb-4 space-y-2 shadow-md">
+          <a href="/" className="block text-gray-700 hover:text-blue-700 font-medium transition duration-200">Home</a>
+          <a href="/tools" className="block text-gray-700 hover:text-blue-700 font-medium transition duration-200">Tools</a>
+          <a href="/about" className="block text-gray-700 hover:text-blue-700 font-medium transition duration-200">About</a>
+          <a href="/contact" className="block text-gray-700 hover:text-blue-700 font-medium transition duration-200">Contact</a>
+        </div>
+      )}
+    </nav>
+  );
+}
