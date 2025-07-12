@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
-import { FaQrcode, FaCalculator, FaFilePdf, FaDollarSign, FaCut } from 'react-icons/fa'
+import { FaQrcode, FaCalculator, FaFilePdf, FaDollarSign, FaCut, FaCamera } from 'react-icons/fa'
 
 const iconMap = {
   'QR Code Generator': <FaQrcode size={48} className="text-indigo-600" />,
+  'QR Scanner': <FaCamera size={48} className="text-indigo-600" />, 
   'Age Calculator': <FaCalculator size={48} className="text-indigo-600" />,
   'Text to PDF': <FaFilePdf size={48} className="text-indigo-600" />,
   'Currency Converter': <FaDollarSign size={48} className="text-indigo-600" />,

@@ -1,4 +1,4 @@
-import FeatureCard from './FeatureCard'
+import FeatureCard from './FeatureCard';
 
 export default function FeaturesGrid() {
   const features = [
@@ -6,8 +6,9 @@ export default function FeaturesGrid() {
     { title: 'Text to PDF', link: '/pdf', description: 'Convert any text into a downloadable PDF document.' },
     { title: 'URL Shortener', link: '/shorten', description: 'Turn long URLs into short, shareable links.' },
     { title: 'Currency Converter', link: '/currency', description: 'Convert currencies with up-to-date exchange rates.' },
-    { title: 'Age Calculator', link: '/age', description: 'Calculate your exact age from your birth date.' },  
-  ]
+    { title: 'Age Calculator', link: '/age', description: 'Calculate your exact age from your birth date.' },
+    { title: 'QR Scanner', link: '/qrscanner', description: 'Scan QR codes using image upload or your device camera.' }, 
+  ];
 
   return (
     <section className="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-12">
@@ -22,5 +23,5 @@ export default function FeaturesGrid() {
         </div>
       </div>
     </section>
-  )
+  );
 }

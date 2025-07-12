@@ -38,6 +38,8 @@ app.use('/api', ageRoute);
 const currencyRoute = require('./routes/currency');
 app.use('/api', currencyRoute);
 
+const qrScanRoute = require('./routes/qrscan');
+app.use('/api', qrScanRoute);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
