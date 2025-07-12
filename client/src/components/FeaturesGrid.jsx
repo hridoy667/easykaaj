@@ -4,6 +4,7 @@ export default function FeaturesGrid() {
   const features = [
     { title: 'QR Code Generator', link: '/qr', description: 'Create custom QR codes quickly and easily.' },
     { title: 'Text to PDF', link: '/pdf', description: 'Convert any text into a downloadable PDF document.' },
+    { title: 'URL Shortener', link: '/shorten', description: 'Turn long URLs into short, shareable links.' },
     { title: 'Currency Converter', link: '/currency', description: 'Convert currencies with up-to-date exchange rates.' },
     { title: 'Age Calculator', link: '/age', description: 'Calculate your exact age from your birth date.' },  
   ]
