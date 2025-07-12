@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import QRCodePage from './pages/QRCodePage'
 import AgeCalculatorPage from './pages/AgeCalculatorPage'
 import PDFPage from './pages/PDFPage'
+import CurrencyConverterPage from './pages/CurrencyConverterPage'
 
 export default function App() {
   return (
@@ -15,7 +16,10 @@ export default function App() {
         <Route path="/qr" element={<QRCodePage />} />
         <Route path="/age" element={<AgeCalculatorPage />} />
         <Route path="/pdf" element={<PDFPage />} />
+        <Route path="/currency" element={<CurrencyConverterPage />} />
       </Routes>
+
+
     </>
   )
 }
