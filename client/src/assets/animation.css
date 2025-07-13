@@ -53,3 +53,13 @@
     }
   }
   
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    45%, 55% { opacity: 0.2; }
+    50% { opacity: 0.8; }
+  }
+  
+  .animate-flicker {
+    animation: flicker 4s infinite;
+  }
+  
