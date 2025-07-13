@@ -5,14 +5,17 @@ export default function PDFPage() {
   const [text, setText] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState(null);
 
-  const handleDownload = async () => {
+  const handleGenerate = async () => {
     if (!text.trim()) {
       setError('Please enter some text.');
+      setPdfUrl(null);
       return;
     }
     setError('');
     setLoading(true);
+    setPdfUrl(null);
 
     try {
       const response = await axios.post(
@@ -22,21 +25,27 @@ export default function PDFPage() {
       );
 
       const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'easykaaj.pdf');
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      setPdfUrl(url);
     } catch {
       setError('Failed to generate PDF. Try again later.');
+      setPdfUrl(null);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleDownload = () => {
+    if (!pdfUrl) return;
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.setAttribute('download', 'easykaaj.pdf');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center justify-center px-4 py-10">
       <div className="bg-white rounded-xl shadow-xl max-w-lg w-full p-8">
         <h1 className="text-3xl font-extrabold text-indigo-700 mb-6 text-center">
           Text to PDF Converter
@@ -51,14 +60,34 @@ export default function PDFPage() {
         />
 
         <button
-          onClick={handleDownload}
+          onClick={handleGenerate}
           disabled={loading}
           className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition duration-300"
         >
-          {loading ? 'Generating PDF...' : 'Download PDF'}
+          {loading ? 'Generating PDF...' : 'Generate PDF Link'}
         </button>
 
         {error && <p className="mt-4 text-red-600 text-center font-medium">{error}</p>}
+
+        {pdfUrl && (
+          <div className="mt-6 text-center">
+            <a
+              href={pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-indigo-700 underline mb-4 inline-block"
+            >
+              View Generated PDF
+            </a>
+            <br />
+            <button
+              onClick={handleDownload}
+              className="mt-2 px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            >
+              Download PDF
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

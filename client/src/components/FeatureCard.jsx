@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { FaQrcode, FaCalculator, FaFilePdf, FaDollarSign, FaCut, FaCamera } from 'react-icons/fa'
+import { FaQrcode, FaCalculator, FaFilePdf, FaDollarSign, FaCut, FaCamera, FaImages, FaCompress } from 'react-icons/fa'
 
 const iconMap = {
   'QR Code Generator': <FaQrcode size={48} className="text-indigo-600" />,
@@ -7,7 +7,10 @@ const iconMap = {
   'Age Calculator': <FaCalculator size={48} className="text-indigo-600" />,
   'Text to PDF': <FaFilePdf size={48} className="text-indigo-600" />,
   'Currency Converter': <FaDollarSign size={48} className="text-indigo-600" />,
-  'URL Shortener': <FaCut size={48} className="text-indigo-600" />
+  'URL Shortener': <FaCut size={48} className="text-indigo-600" />,
+  'Image to PDF': <FaImages size={48} className="text-indigo-600" />,
+  'PDF Compressor': <FaCompress size={48} className="text-indigo-600" />,
+  
 }
 
 export default function FeatureCard({ title, link , description}) {

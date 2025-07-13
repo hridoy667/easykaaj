@@ -8,6 +8,9 @@ import PDFPage from './pages/PDFPage'
 import CurrencyConverterPage from './pages/CurrencyConverterPage'
 import UrlShortenerPage from './pages/UrlShortenerPage';
 import QRScanner from './pages/QRScanner';
+import ImageToPdfPage from './pages/ImageToPdfPage';
+import PDFCompressorPage from './pages/PDFCompressorPage';
+
 
 export default function App() {
   return (
@@ -19,8 +22,10 @@ export default function App() {
         <Route path="/pdf" element={<PDFPage />} />
         <Route path="/shorten" element={<UrlShortenerPage />} />
         <Route path="/qrscanner" element={<QRScanner />} />
+        <Route path="/imgtopdf" element={<ImageToPdfPage />} />
         <Route path="/age" element={<AgeCalculatorPage />} />
         <Route path="/currency" element={<CurrencyConverterPage />} />
+        <Route path="/pdf-compressor" element={<PDFCompressorPage />} />
       </Routes>
 
 

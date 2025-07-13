@@ -21,7 +21,7 @@ app.post('/api/echo', (req, res) => {
   res.json({ echoedText: text });
 });
 
-const pdfRoute = require('./routes/pdf');
+const pdfRoute = require('./routes/pdf'); 
 app.use('/api', pdfRoute);
 
 const qrRoute = require('./routes/qr');
@@ -40,6 +40,13 @@ app.use('/api', currencyRoute);
 
 const qrScanRoute = require('./routes/qrscan');
 app.use('/api', qrScanRoute);
+
+const imageToPdfRoute = require('./routes/imageToPdf');
+app.use('/api', imageToPdfRoute);
+
+const pdfCompressRoute = require('./routes/pdfcompress');
+app.use('/api', pdfCompressRoute);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
