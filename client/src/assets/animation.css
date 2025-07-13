@@ -1,0 +1,55 @@
+.gears-container {
+    position: relative;
+    width: 264px; /* 220 * 1.2 */
+    height: 216px; /* 180 * 1.2 */
+  }
+  
+  .gear-big {
+    position: absolute;
+    top: 48px;   /* 40 * 1.2 */
+    left: 0;
+    width: 144px;  /* 120 * 1.2 */
+    height: 144px; /* 120 * 1.2 */
+    color: #5a67d8;
+    animation: gearRotateClockwise 40s linear infinite;
+  }
+  
+  .gear-small {
+    position: absolute;
+    top: 72px;    /* 60 * 1.2 */
+    left: 132px;  /* 110 * 1.2 */
+    width: 72px;  /* 60 * 1.2 */
+    height: 72px; /* 60 * 1.2 */
+    color: #7f9cf5;
+    animation: gearRotateCounter 20s linear infinite;
+  }
+  
+  .gear-medium {
+    position: absolute;
+    top: 144px;    /* 120 * 1.2 */
+    left: 120px;   /* 100 * 1.2 */
+    width: 108px;  /* 90 * 1.2 */
+    height: 108px; /* 90 * 1.2 */
+    color: #4c51bf;
+    animation: gearRotateClockwise 30s linear infinite;
+  }
+  
+  
+  @keyframes gearRotateClockwise {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes gearRotateCounter {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+  
