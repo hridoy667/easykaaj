@@ -14,7 +14,7 @@ import PDFCompressorPage from './pages/PDFCompressorPage';
 
 export default function App() {
   return (
-    <>
+    <div className="bg-gradient-to-b from-indigo-950 to-indigo-900">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -29,6 +29,6 @@ export default function App() {
       </Routes>
 
 
-    </>
+    </div>
   )
 }

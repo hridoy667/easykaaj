@@ -13,11 +13,15 @@ export default function FeaturesGrid() {
   ];
 
   return (
-    <section className="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-12">
+    <section className="bg-gradient-to-br from-gray-900 via-indigo-900 to-black min-h-screen py-5">
       <div className="max-w-7xl mx-auto px-6">
-        <h1 className="text-4xl font-extrabold text-indigo-800 mb-10 text-center">
+        <h1 className="text-4xl font-extrabold text-white mb-1 text-center">
           Handy tools you may need to work with
         </h1>
+        <p class="text-center text-white mb-5 text-lg md:text-xl font-small text-gray-700 max-w-2xl mx-auto mt-6 px-4 leading-relaxed">
+  From PDFs to QR codes, conversions to calculations — <span class="font-semibold text-blue-200">EasyKaaj</span> brings you a clean, ad-free experience to get things done faster. No logins, no fuss — just smart tools that work instantly, anytime, anywhere.
+</p>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {features.map((feature, idx) => (
             <FeatureCard key={idx} title={feature.title} link={feature.link} description={feature.description} />
