@@ -47,6 +47,9 @@ app.use('/api', imageToPdfRoute);
 const pdfCompressRoute = require('./routes/pdfcompress');
 app.use('/api', pdfCompressRoute);
 
+const pdfMergeRoute = require('./routes/pdfMerge');
+app.use('/api', pdfMergeRoute);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

@@ -8,8 +8,10 @@ export default function FeaturesGrid() {
     { title: 'QR Scanner', link: '/qrscanner', description: 'Scan QR codes using image upload or your device camera.' },
     { title: 'Image to PDF',link: '/imgtopdf',description: 'Convert one or more images into a single downloadable PDF.' },
     { title: 'PDF Compressor', link: '/pdf-compressor', description: 'Compress PDF files to reduce their size quickly and easily.' },
+    { title: 'Merge PDFs', link: '/merge-pdf', description: 'Combine multiple PDFs into a single file.' },
     { title: 'Currency Converter', link: '/currency', description: 'Convert currencies with up-to-date exchange rates.' },
     { title: 'Age Calculator', link: '/age', description: 'Calculate your exact age from your birth date.' },
+    
   ];
 
   return (

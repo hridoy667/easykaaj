@@ -16,7 +16,7 @@ export default function HeroSection() {
                 </p>
                 <a
                     href="#tools"
-                    className="inline-block bg-indigo-600 hover:bg-indigo-700 transition-colors text-white font-semibold py-3 px-6 rounded-xl shadow-lg"
+                    className="inline-block bg-indigo-200 hover:bg-indigo-700 transition-colors text-black font-semibold py-3 px-6 rounded-xl shadow-lg"
                 >
                     Explore Tools
                 </a>

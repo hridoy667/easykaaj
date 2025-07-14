@@ -1,5 +1,5 @@
 import FeaturesGrid from '../components/FeaturesGrid'
-import HeroSection from './HeroSection'
+import HeroSection from '../components/HeroSection'
 
 export default function Home() {
   return (
