@@ -58,6 +58,8 @@ const pdfCompressRoute = require('./routes/pdfcompress');
 const pdfMergeRoute = require('./routes/pdfMerge');
 const imageCompressorRouter = require('./routes/imageCompressor');
 const pdfExtractRoute = require('./routes/pdfExtract');
+const feedbackRoute = require('./routes/feedback');
+
 
 // Use routes with proper base paths
 app.use('/api/pdf', pdfRoute);
@@ -71,6 +73,7 @@ app.use('/api/pdf-compress', pdfCompressRoute);
 app.use('/api/pdf-merge', pdfMergeRoute);
 app.use('/api/image-compressor', imageCompressorRouter);
 app.use('/api/pdf-extract', pdfExtractRoute);
+app.use('/api', feedbackRoute);
 
 // 404 handler for unknown routes
 app.use((req, res, next) => {

@@ -75,9 +75,7 @@ export default function Navbar() {
           <a href="/about" className="text-white hover:text-blue-200 font-medium transition duration-200">
             About
           </a>
-          <a href="/contact" className="text-white hover:text-blue-200 font-medium transition duration-200">
-            Contact
-          </a>
+        
         </div>
 
         {/* Mobile Hamburger Button */}
@@ -143,9 +141,7 @@ export default function Navbar() {
           <a href="/about" className="block text-white hover:text-blue-700 font-medium transition duration-200">
             About
           </a>
-          <a href="/contact" className="block text-white hover:text-blue-700 font-medium transition duration-200">
-            Contact
-          </a>
+          
         </div>
       )}
     </nav>

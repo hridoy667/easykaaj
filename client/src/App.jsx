@@ -16,6 +16,7 @@ import PDFCompressorPage from './pages/PDFCompressorPage'
 import KeyboardTesterPage from './pages/KeyboardTesterPage';
 import ImageCompressorPage from './pages/ImageCompressor'; 
 import PDFTextExtractor from './pages/PDFTextExtractor';
+import About from './pages/About';
 
 export default function App() {
   const [showIntro, setShowIntro] = useState(true);
@@ -29,6 +30,7 @@ export default function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
             <Route path="/qr" element={<QRCodePage />} />
             <Route path="/pdf" element={<PDFPage />} />
             <Route path="/shorten" element={<UrlShortenerPage />} />

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <footer className="bg-indigo-900/90 backdrop-blur-md text-white py-5 mt-10">
+    <footer className="bg-gradient-to-br from-indigo-800 via-indigo-900 to-black/90 backdrop-blur-md text-white py-5 mt-10">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Brand / Logo */}
         <div>
@@ -53,6 +53,9 @@ export default function Footer() {
           </div>
           <p className="text-indigo-400 text-sm">
             &copy; {new Date().getFullYear()} EasyKaaj. All rights reserved.
+          </p>
+          <p className="text-indigo-400 text-sm">
+            Designed and Developed by <a href="https://facebook.com/aliimam.hridoy" target='blank'>Ali Imam Hridoy</a>
           </p>
         </div>
       </div>
