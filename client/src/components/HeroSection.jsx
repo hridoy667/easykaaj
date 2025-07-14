@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaCogs, FaToolbox, FaLightbulb } from 'react-icons/fa';
+import { FaCogs, FaToolbox, FaLightbulb,FaTools } from 'react-icons/fa';
 import '../assets/animation.css';
 
 export default function HeroSection() {
@@ -27,7 +27,7 @@ export default function HeroSection() {
   <div className="gears-container relative w-[300px] h-[260px]">
 
     {/* 💡 Glowing Rotated Bulb */}
-    <div className="absolute -top-8 -left-8 rotate-[145deg] text-yellow-400 text-6xl drop-shadow-[0_0_20px_rgba(250,204,21,0.9)] animate-pulse ">
+    <div className="absolute -top-8 -left-15 rotate-[160deg] text-yellow-400 text-6xl drop-shadow-[0_0_20px_rgba(250,204,21,0.9)] animate-pulse ">
   {/* Wire (as a div behind bulb) */}
   <div className="absolute w-[2px] h-12 bg-gray-600 top-full left-1/2 -translate-x-1/2 rotate-[20deg] origin-top z-[-1] text-yellow-400 animate-flicker  " />
   <FaLightbulb />
@@ -49,7 +49,10 @@ export default function HeroSection() {
     </div>
 
     {/* 🧰 Toolbox - Floating & Glowing */}
-    <div className="absolute top-[190px] left-[-10px] text-indigo-400 text-[90px] drop-shadow-[0_0_15px_rgba(129,140,248,0.4)] animate-bounce-slow">
+    <div className="absolute top-[220px] left-[40px] text-indigo-400 text-[70px] drop-shadow-[0_0_15px_rgba(129,140,248,0.4)] animate-bounce-slow">
+      < FaTools/>
+    </div>
+    <div className="absolute top-[160px] left-[-60px] text-indigo-400 text-[90px] drop-shadow-[0_0_15px_rgba(129,140,248,0.4)] animate-bounce-slow">
       <FaToolbox />
     </div>
 

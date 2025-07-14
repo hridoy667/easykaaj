@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { 
   FaQrcode, FaCalculator, FaFilePdf, 
   FaDollarSign, FaCut, FaCamera, 
-  FaImages, FaCompress, FaLayerGroup
+  FaImages, FaCompress, FaLayerGroup,FaKeyboard,FaCompressAlt, FaFileAlt
 } from 'react-icons/fa'
 
 const iconMap = {
@@ -15,6 +15,9 @@ const iconMap = {
   'Image to PDF': <FaImages size={48} className="text-indigo-300 drop-shadow-sm" />,
   'PDF Compressor': <FaCompress size={48} className="text-indigo-300 drop-shadow-sm" />,
   'Merge PDFs': <FaLayerGroup size={48} className="text-indigo-300 drop-shadow-sm" />,
+  'Keyboard Tester': <FaKeyboard size={48} className="text-indigo-300 drop-shadow-sm" />,
+  'Image Compressor': <FaCompressAlt size={48} className="text-indigo-300 drop-shadow-sm" />,
+  'PDF Text Extractor': <FaFileAlt size={48} className="text-indigo-300 drop-shadow-sm" />,
 }
 
 export default function FeatureCard({ title, link, description }) {

@@ -37,7 +37,7 @@ export default function MergePdfPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 flex flex-col items-center justify-start p-10">
+    <div className="min-h-screen flex flex-col items-center justify-start p-10">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl">
         <h2 className="text-2xl font-bold text-indigo-700 mb-4 text-center">Merge PDF Files</h2>
         <input

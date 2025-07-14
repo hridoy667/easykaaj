@@ -3,13 +3,14 @@ import axios from 'axios';
 
 export default function PDFPage() {
   const [text, setText] = useState('');
+  const [file, setFile] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(null);
 
   const handleGenerate = async () => {
-    if (!text.trim()) {
-      setError('Please enter some text.');
+    if (!text.trim() && !file) {
+      setError('Please enter some text or upload a .txt file.');
       setPdfUrl(null);
       return;
     }
@@ -18,10 +19,20 @@ export default function PDFPage() {
     setPdfUrl(null);
 
     try {
+      const formData = new FormData();
+      if (file) {
+        formData.append('txtFile', file);
+      } else {
+        formData.append('text', text);
+      }
+
       const response = await axios.post(
         'http://localhost:5000/api/convert-pdf',
-        { text },
-        { responseType: 'blob' }
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          responseType: 'blob',
+        }
       );
 
       const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
@@ -44,20 +55,51 @@ export default function PDFPage() {
     link.remove();
   };
 
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile && selectedFile.type !== 'text/plain') {
+      setError('Please upload only .txt files.');
+      setFile(null);
+    } else {
+      setError('');
+      setFile(selectedFile);
+      setText(''); // Clear text input if file selected
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col items-center justify-center px-4 py-10">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10">
       <div className="bg-white rounded-xl shadow-xl max-w-lg w-full p-8">
         <h1 className="text-3xl font-extrabold text-indigo-700 mb-6 text-center">
-          Text to PDF Converter
+          Text or File to PDF Converter
         </h1>
 
         <textarea
           rows="8"
           placeholder="Enter your text here..."
           value={text}
-          onChange={(e) => setText(e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none mb-6"
+          onChange={(e) => {
+            setText(e.target.value);
+            if (file) setFile(null); // Clear file if user types text
+          }}
+          disabled={!!file} // disable textarea if file is selected
+          className="w-full rounded-md border border-gray-300 px-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none mb-4"
         />
+
+        <div className="mb-6">
+          <label className="block mb-2 font-semibold text-indigo-700">
+            Or upload a .txt file:
+          </label>
+          <input
+            type="file"
+            accept=".txt"
+            onChange={handleFileChange}
+            className="block w-full text-indigo-700"
+          />
+          {file && (
+            <p className="mt-2 text-green-600 font-medium">Selected file: {file.name}</p>
+          )}
+        </div>
 
         <button
           onClick={handleGenerate}

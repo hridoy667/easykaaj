@@ -1,14 +1,30 @@
-// routes/pdf.js
-
 const express = require('express');
 const PDFDocument = require('pdfkit');
+const multer = require('multer');
+const fs = require('fs');
 const router = express.Router();
 
-router.post('/convert-pdf', (req, res) => {
-  const { text } = req.body;
+// multer setup for memory storage (no file saving on disk)
+const upload = multer({ storage: multer.memoryStorage() });
 
-  if (!text) {
-    return res.status(400).json({ error: 'Text is required.' });
+router.post('/convert-pdf', upload.single('txtFile'), (req, res) => {
+  // txtFile will be in req.file if uploaded
+  // text from input will be in req.body.text
+
+  let textContent = req.body.text || '';
+
+  if (req.file) {
+    // Check uploaded file extension (basic validation)
+    if (!req.file.originalname.endsWith('.txt')) {
+      return res.status(400).json({ error: 'Only .txt files are supported.' });
+    }
+
+    // Read file content from buffer
+    textContent = req.file.buffer.toString('utf-8');
+  }
+
+  if (!textContent.trim()) {
+    return res.status(400).json({ error: 'No text provided or empty file.' });
   }
 
   const doc = new PDFDocument();
@@ -16,7 +32,7 @@ router.post('/convert-pdf', (req, res) => {
   res.setHeader('Content-Disposition', 'attachment; filename=easykaaj.pdf');
 
   doc.pipe(res);
-  doc.text(text);
+  doc.text(textContent);
   doc.end();
 });
 
