@@ -27,9 +27,9 @@ export default function HeroSection() {
   <div className="gears-container relative w-[300px] h-[260px]">
 
     {/* 💡 Glowing Rotated Bulb */}
-    <div className="absolute -top-8 -left-15 rotate-[160deg] text-yellow-400 text-6xl drop-shadow-[0_0_20px_rgba(250,204,21,0.9)] animate-pulse ">
+    <div className="absolute -top-8 -left-15 rotate-[170deg] text-yellow-400 text-6xl drop-shadow-[0_0_20px_rgba(250,204,21,0.9)] animate-pulse ">
   {/* Wire (as a div behind bulb) */}
-  <div className="absolute w-[2px] h-12 bg-gray-600 top-full left-1/2 -translate-x-1/2 rotate-[20deg] origin-top z-[-1] text-yellow-400 animate-flicker  " />
+  <div className="absolute w-[2px] h-12 bg-gray-600 top-full left-1/2 -translate-x-1/2 rotate-[-20deg] origin-top z-[-1] text-yellow-400 animate-flicker  " />
   <FaLightbulb />
 </div>
 
