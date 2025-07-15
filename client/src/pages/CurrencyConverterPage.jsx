@@ -25,7 +25,7 @@ export default function CurrencyConverterPage() {
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/api/convert-currency', {
+      const res = await axios.post('http://localhost:5000/api/currency/convert-currency', {
         from: fromCurrency,
         to: toCurrency,
         amount: Number(amount),

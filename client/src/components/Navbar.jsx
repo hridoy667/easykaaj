@@ -26,9 +26,7 @@ export default function Navbar() {
           <a href="/" className="text-white hover:text-blue-200 font-medium transition duration-200">
             Home
           </a>
-          <a href="/tools" className="text-white hover:text-blue-200 font-medium transition duration-200">
-            Tools
-          </a>
+          
 
           {/* PDF Tools Dropdown */}
           <div
@@ -71,7 +69,9 @@ export default function Navbar() {
               </div>
             )}
           </div>
-
+          <a href="/tools" className="text-white hover:text-blue-200 font-medium transition duration-200">
+            Tools
+          </a>
           <a href="/about" className="text-white hover:text-blue-200 font-medium transition duration-200">
             About
           </a>
@@ -97,9 +97,7 @@ export default function Navbar() {
           <a href="/" className="block text-white hover:text-blue-700 font-medium transition duration-200">
             Home
           </a>
-          <a href="/tools" className="block text-white hover:text-blue-700 font-medium transition duration-200">
-            Tools
-          </a>
+         
 
           {/* Mobile PDF Tools Dropdown */}
           <div>
@@ -137,7 +135,9 @@ export default function Navbar() {
               </ul>
             )}
           </div>
-
+          <a href="/tools" className="block text-white hover:text-blue-700 font-medium transition duration-200">
+            Tools
+          </a>
           <a href="/about" className="block text-white hover:text-blue-700 font-medium transition duration-200">
             About
           </a>

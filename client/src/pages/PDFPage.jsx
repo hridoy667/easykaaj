@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
+import { FaFileUpload } from 'react-icons/fa';
 
 export default function PDFPage() {
   const [text, setText] = useState('');
@@ -7,6 +8,7 @@ export default function PDFPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState(null);
+  const fileInputRef = useRef();
 
   const handleGenerate = async () => {
     if (!text.trim() && !file) {
@@ -56,57 +58,81 @@ export default function PDFPage() {
   };
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile && selectedFile.type !== 'text/plain') {
-      setError('Please upload only .txt files.');
+    const selected = e.target.files[0];
+    if (selected && selected.type !== 'text/plain') {
+      setError('Only .txt files are allowed.');
       setFile(null);
     } else {
+      setFile(selected);
       setError('');
-      setFile(selectedFile);
-      setText(''); // Clear text input if file selected
+      setText('');
     }
   };
 
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile && droppedFile.type === 'text/plain') {
+      setFile(droppedFile);
+      setText('');
+      setError('');
+    } else {
+      setError('Only .txt files are allowed.');
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10 ">
       <div className="bg-white rounded-xl shadow-xl max-w-lg w-full p-8">
         <h1 className="text-3xl font-extrabold text-indigo-700 mb-6 text-center">
           Text or File to PDF Converter
         </h1>
 
         <textarea
-          rows="8"
+          rows="6"
           placeholder="Enter your text here..."
           value={text}
           onChange={(e) => {
             setText(e.target.value);
-            if (file) setFile(null); // Clear file if user types text
+            if (file) setFile(null);
           }}
-          disabled={!!file} // disable textarea if file is selected
+          disabled={!!file}
           className="w-full rounded-md border border-gray-300 px-4 py-3 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none mb-4"
         />
 
-        <div className="mb-6">
-          <label className="block mb-2 font-semibold text-indigo-700">
-            Or upload a .txt file:
-          </label>
+        {/* Modern drag-drop uploader */}
+        <div
+          className="flex flex-col items-center justify-center border-2 border-dashed border-indigo-400 rounded-lg p-6 cursor-pointer hover:bg-indigo-50 transition-all"
+          onClick={() => fileInputRef.current.click()}
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+        >
+          <FaFileUpload size={36} className="text-indigo-500 mb-2" />
+          <p className="text-sm text-indigo-700 font-medium">
+            Drag & drop a .txt file here or click to browse
+          </p>
+          {file && (
+            <p className="mt-2 text-green-600 font-semibold">✅ {file.name}</p>
+          )}
           <input
             type="file"
             accept=".txt"
             onChange={handleFileChange}
-            className="block w-full text-indigo-700"
+            ref={fileInputRef}
+            className="hidden"
           />
-          {file && (
-            <p className="mt-2 text-green-600 font-medium">Selected file: {file.name}</p>
-          )}
         </div>
 
         <button
           onClick={handleGenerate}
           disabled={loading}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition duration-300"
+          className="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition duration-300"
         >
-          {loading ? 'Generating PDF...' : 'Generate PDF Link'}
+          {loading ? 'Generating PDF...' : 'Generate PDF'}
         </button>
 
         {error && <p className="mt-4 text-red-600 text-center font-medium">{error}</p>}
