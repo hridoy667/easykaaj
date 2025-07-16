@@ -15,7 +15,7 @@ export default function HeroSection() {
                     All your daily tools — from PDFs to QR codes — in one smart, fast, and ad-free place.
                 </p>
                 <a
-                    href="#tools"
+                    href="/tools"
                     className="inline-block bg-indigo-200 hover:bg-indigo-700 transition-colors text-black font-semibold py-3 px-6 rounded-xl shadow-lg"
                 >
                     Explore Tools
