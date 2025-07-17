@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import axios from 'axios';
+import axios from '../axiosInstance';
 import { FaFileUpload } from 'react-icons/fa';
 
 export default function PDFPage() {
@@ -29,7 +29,7 @@ export default function PDFPage() {
       }
 
       const response = await axios.post(
-        'http://localhost:5000/api/convert-pdf',
+        '/api/pdf/convert-pdf',  // exactly matches backend mounting in server.js
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },
@@ -37,7 +37,9 @@ export default function PDFPage() {
         }
       );
 
-      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+      const url = window.URL.createObjectURL(
+        new Blob([response.data], { type: 'application/pdf' })
+      );
       setPdfUrl(url);
     } catch {
       setError('Failed to generate PDF. Try again later.');

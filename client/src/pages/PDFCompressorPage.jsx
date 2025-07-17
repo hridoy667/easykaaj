@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
-import axios from 'axios';
+import axios from '../axiosInstance';
 import { FaFilePdf, FaCloudUploadAlt } from 'react-icons/fa';
+
 
 export default function PdfCompressor() {
   const [file, setFile] = useState(null);
@@ -37,24 +38,24 @@ export default function PdfCompressor() {
 
   const handleCompress = async () => {
     if (!file) return setError('Please select a PDF file.');
-
+  
     setError('');
     setLoading(true);
     setCompressedPdfUrl(null);
-
+  
     const formData = new FormData();
     formData.append('pdf', file);
-
+  
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/compress-pdf',
+        '/api/pdf-compress/compress-pdf',
         formData,
         {
           responseType: 'blob',
           headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
-
+  
       const url = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
       setCompressedPdfUrl(url);
     } catch {
@@ -63,6 +64,7 @@ export default function PdfCompressor() {
       setLoading(false);
     }
   };
+  
 
   const handleDownload = () => {
     if (!compressedPdfUrl) return;

@@ -44,29 +44,34 @@ export default function MergePdfPage() {
       setError('Please select at least 2 PDF files.');
       return;
     }
-
+  
     const formData = new FormData();
     files.forEach(file => formData.append('pdfs', file));
-
+  
     setLoading(true);
     setError('');
     setMergedUrl(null);
-
+  
     try {
-      const res = await axios.post('http://localhost:5000/api/merge-pdf', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        responseType: 'blob',
-      });
-
+      const res = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + '/api/pdf-merge/merge-pdf', // no trailing slash
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          responseType: 'blob',
+        }
+      );
+  
       const url = URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
       setMergedUrl(url);
     } catch (err) {
-      console.error(err);
+      console.error('Merge PDF error:', err);
       setError('❌ Failed to merge PDFs.');
     } finally {
       setLoading(false);
     }
   };
+  
 
   const removeFile = (index) => {
     const updated = [...files];
@@ -103,7 +108,6 @@ export default function MergePdfPage() {
           />
         </div>
 
-        {/* File list */}
         {files.length > 0 && (
           <ul className="mb-6 space-y-2">
             {files.map((file, idx) => (

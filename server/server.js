@@ -2,30 +2,31 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-require('dotenv').config();
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
 
-// Import ShortUrl model for global redirect route
-const ShortUrl = require('./models/ShortUrl');
+// === Middleware ===
 
-// Security Middleware
-app.use(helmet());
+// Security HTTP headers
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 
-// CORS setup — adjust origin as per your frontend URL
+// Enable CORS for frontend
 app.use(cors({
-  origin: 'http://localhost:5173',  // Change to your frontend URL in production
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   optionsSuccessStatus: 200,
 }));
 
-// Body parser
+// JSON body parser
 app.use(express.json());
 
-// Rate Limiter — 10 requests per minute per IP
+// Rate limiter: 40 requests per minute
 const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
+  windowMs: 1 * 60 * 1000,
   max: 40,
   message: {
     status: 429,
@@ -34,12 +35,15 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ Connected to MongoDB Atlas'))
-  .catch((err) => console.error('❌ MongoDB connection error:', err));
+// === MongoDB Connection ===
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('✅ Connected to MongoDB Atlas'))
+.catch((err) => console.error('❌ MongoDB connection error:', err));
 
-// Basic test route
+// === Test Routes ===
 app.get('/api/ping', (req, res) => {
   res.send("EasyKaaj server is working! ✅");
 });
@@ -49,59 +53,52 @@ app.post('/api/echo', (req, res) => {
   res.json({ echoedText: text });
 });
 
-// Import routes
-const pdfRoute = require('./routes/pdf');
-const qrRoute = require('./routes/qr');
-const urlShortenerRoute = require('./routes/urlshortener');
-const ageRoute = require('./routes/age');
-const currencyRoute = require('./routes/currency');
-const qrScanRoute = require('./routes/qrscan');
-const imageToPdfRoute = require('./routes/imageToPdf');
-const pdfCompressRoute = require('./routes/pdfcompress');
-const pdfMergeRoute = require('./routes/pdfMerge');
-const imageCompressorRouter = require('./routes/imageCompressor');
-const pdfExtractRoute = require('./routes/pdfExtract');
-const feedbackRoute = require('./routes/feedback');
+// === Route Imports ===
+const routes = {
+  '/api/pdf': require('./routes/pdf'),
+  '/api/qr': require('./routes/qr'),
+  '/api/urlshortener': require('./routes/urlshortener'),
+  '/api/age': require('./routes/age'),
+  '/api/currency': require('./routes/currency'),
+  '/api/qrscan': require('./routes/qrscan'),
+  '/api/image-to-pdf': require('./routes/imageToPdf'),
+  '/api/pdf-compress': require('./routes/pdfcompress'),
+  '/api/pdf-merge': require('./routes/pdfMerge'),
+  '/api/image-compressor': require('./routes/imageCompressor'),
+  '/api/pdf-extract': require('./routes/pdfExtract'),
+  '/api': require('./routes/feedback')
+};
 
-// Use routes with proper base paths
-app.use('/api/pdf', pdfRoute);
-app.use('/api/qr', qrRoute);
-app.use('/api/urlshortener', urlShortenerRoute);
-app.use('/api/age', ageRoute);
-app.use('/api/currency', currencyRoute);
-app.use('/api/qrscan', qrScanRoute);
-app.use('/api/image-to-pdf', imageToPdfRoute);
-app.use('/api/pdf-compress', pdfCompressRoute);
-app.use('/api/pdf-merge', pdfMergeRoute);
-app.use('/api/image-compressor', imageCompressorRouter);
-app.use('/api/pdf-extract', pdfExtractRoute);
-app.use('/api', feedbackRoute);
+// === Register Routes ===
+for (const [path, handler] of Object.entries(routes)) {
+  app.use(path, handler);
+}
 
-// **Global redirect route for short URLs (without /api prefix)**
+// === Global Redirect for Short URLs ===
+const ShortUrl = require('./models/ShortUrl');
 app.get('/:shortCode', async (req, res) => {
   try {
     const short = await ShortUrl.findOne({ shortCode: req.params.shortCode });
     if (!short) return res.status(404).send('URL not found');
-
-    return res.redirect(short.originalUrl);
+    res.redirect(short.originalUrl);
   } catch (err) {
     console.error(err);
-    return res.status(500).send('Server error');
+    res.status(500).send('Server error');
   }
 });
 
-// 404 handler for unknown routes
-app.use((req, res, next) => {
+// === 404 Not Found ===
+app.use((req, res) => {
   res.status(404).json({ error: 'Route not found.' });
 });
 
-// Global error handler
+// === Global Error Handler ===
 app.use((err, req, res, next) => {
-  console.error('🔥', err.stack);
+  console.error('🔥 Internal Error:', err.stack);
   res.status(500).json({ error: 'Internal Server Error.' });
 });
 
-// Start server
+// === Start Server ===
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
