@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import axios from '../axiosInstance'; // ✅ uses backend base URL
 
 export default function FeedbackForm() {
   const [feedback, setFeedback] = useState('');
@@ -10,7 +10,7 @@ export default function FeedbackForm() {
     if (!feedback.trim()) return setStatus('Please enter feedback.');
 
     try {
-      const res = await axios.post('http://localhost:5000/api/feedback', { feedback });
+      const res = await axios.post('/api/feedback/feedback', { feedback }); // ✅ relative to backend baseURL
       if (res.status === 200) {
         setStatus('✅ Thanks for your feedback!');
         setFeedback('');
@@ -18,6 +18,7 @@ export default function FeedbackForm() {
         setStatus('❌ Something went wrong. Try again.');
       }
     } catch (err) {
+      console.error(err);
       setStatus('❌ Server error. Try again later.');
     }
   };

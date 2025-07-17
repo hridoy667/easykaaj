@@ -7,6 +7,9 @@ const mongoose = require('mongoose');
 
 const app = express();
 
+// Import ShortUrl model for global redirect route
+const ShortUrl = require('./models/ShortUrl');
+
 // Security Middleware
 app.use(helmet());
 
@@ -23,7 +26,7 @@ app.use(express.json());
 // Rate Limiter — 10 requests per minute per IP
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
-  max: 10,
+  max: 40,
   message: {
     status: 429,
     error: 'Too many requests from this IP, please try again after a minute.',
@@ -60,7 +63,6 @@ const imageCompressorRouter = require('./routes/imageCompressor');
 const pdfExtractRoute = require('./routes/pdfExtract');
 const feedbackRoute = require('./routes/feedback');
 
-
 // Use routes with proper base paths
 app.use('/api/pdf', pdfRoute);
 app.use('/api/qr', qrRoute);
@@ -74,6 +76,19 @@ app.use('/api/pdf-merge', pdfMergeRoute);
 app.use('/api/image-compressor', imageCompressorRouter);
 app.use('/api/pdf-extract', pdfExtractRoute);
 app.use('/api', feedbackRoute);
+
+// **Global redirect route for short URLs (without /api prefix)**
+app.get('/:shortCode', async (req, res) => {
+  try {
+    const short = await ShortUrl.findOne({ shortCode: req.params.shortCode });
+    if (!short) return res.status(404).send('URL not found');
+
+    return res.redirect(short.originalUrl);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send('Server error');
+  }
+});
 
 // 404 handler for unknown routes
 app.use((req, res, next) => {

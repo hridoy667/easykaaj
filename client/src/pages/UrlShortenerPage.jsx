@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import axios from '../axiosInstance'; // use axios instance with baseURL
 
 export default function UrlShortenerPage() {
   const [originalUrl, setOriginalUrl] = useState('');
@@ -9,18 +9,23 @@ export default function UrlShortenerPage() {
   const handleShorten = async () => {
     setError('');
     setShortUrl('');
-    if (!originalUrl) {
-      setError('Please enter a URL');
+    if (!originalUrl.trim()) {
+      setError('Please enter a valid URL');
       return;
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/api/shorten', {
+      const res = await axios.post('/api/urlshortener/shorten', {
         originalUrl,
       });
       setShortUrl(res.data.shortUrl);
     } catch (err) {
-      setError('Failed to shorten the URL');
+      console.error('Error shortening URL:', err);
+      if (err.response) {
+        setError(`Error: ${err.response.status} ${err.response.data.error || err.response.statusText}`);
+      } else {
+        setError('Network error or server is down.');
+      }
     }
   };
 
@@ -43,7 +48,10 @@ export default function UrlShortenerPage() {
       {error && <p className="text-red-500 mt-4">{error}</p>}
       {shortUrl && (
         <p className="mt-4 text-green-600 font-semibold">
-          Short URL: <a href={shortUrl} target="_blank" className="underline">{shortUrl}</a>
+          Short URL:{' '}
+          <a href={shortUrl} target="_blank" rel="noopener noreferrer" className="underline">
+            {shortUrl}
+          </a>
         </p>
       )}
     </div>
