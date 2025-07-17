@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ShortUrl = require('../Models/ShortUrl'); // ✅ Matches folder name exactly
+const ShortUrl = require('../models/ShortUrl'); // ✅ Matches folder name exactly
 const { nanoid } = require('nanoid');
 
 // POST - Create short URL
