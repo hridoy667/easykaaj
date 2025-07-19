@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../axiosInstance';
 
 const currencyOptions = [
   'BDT','USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'INR', 
@@ -25,7 +25,7 @@ export default function CurrencyConverterPage() {
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/api/currency/convert-currency', {
+      const res = await axiosInstance.post('/api/currency/convert-currency', {
         from: fromCurrency,
         to: toCurrency,
         amount: Number(amount),

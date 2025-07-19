@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../axiosInstance';
 import { QrReader } from '@blackbox-vision/react-qr-reader';
 
 export default function QRScanner() {
@@ -78,7 +78,7 @@ export default function QRScanner() {
     formData.append('image', selectedFile);
 
     try {
-      const res = await axios.post('http://localhost:5000/api/scan-qr-image', formData, {
+      const res = await axiosInstance.post('/api/qrscan/scan-qr-image', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setScanResult(res.data.data);

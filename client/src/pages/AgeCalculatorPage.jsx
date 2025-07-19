@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../axiosInstance';
 
 export default function AgeCalculatorPage() {
   const [birthdate, setBirthdate] = useState('');
@@ -16,7 +16,7 @@ export default function AgeCalculatorPage() {
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/api/calculate-age', { birthdate });
+      const res = await axiosInstance.post('/api/age/calculate-age', { birthdate });
       setResult(res.data.age);
     } catch (err) {
       setError('Failed to calculate age. Try again.');
