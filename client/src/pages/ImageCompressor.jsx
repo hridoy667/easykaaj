@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../axiosInstance';
 import { FaUpload, FaImage, FaDownload } from 'react-icons/fa';
 
 export default function ImageCompressor() {
@@ -39,20 +39,20 @@ export default function ImageCompressor() {
 
   const handleCompress = async () => {
     if (!file) return setError('Please upload an image.');
-
+  
     setLoading(true);
     setError('');
     setCompressedUrl(null);
-
+  
     const formData = new FormData();
     formData.append('image', file);
-
+  
     try {
-      const response = await axios.post('http://localhost:5000/api/compress-image', formData, {
+      const response = await axiosInstance.post('/api/image-compressor/compress-image', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         responseType: 'blob',
       });
-
+  
       const url = URL.createObjectURL(new Blob([response.data], { type: 'image/jpeg' }));
       setCompressedUrl(url);
     } catch {

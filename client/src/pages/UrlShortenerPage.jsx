@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from '../axiosInstance'; // use axios instance with baseURL
+import axiosInstance from '../axiosInstance'; // <-- fixed import
 
 export default function UrlShortenerPage() {
   const [originalUrl, setOriginalUrl] = useState('');
@@ -15,7 +15,7 @@ export default function UrlShortenerPage() {
     }
 
     try {
-      const res = await axios.post('/api/urlshortener/shorten', {
+      const res = await axiosInstance.post('/api/urlshortener/shorten', {  // <-- use axiosInstance here
         originalUrl,
       });
       setShortUrl(res.data.shortUrl);

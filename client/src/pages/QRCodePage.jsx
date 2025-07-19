@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
-
+import axiosInstance from '../axiosInstance'  // use your axios instance with baseURL
 
 export default function QRCodePage() {
   const [text, setText] = useState('')
@@ -19,7 +18,7 @@ export default function QRCodePage() {
     setQrImageUrl('')
 
     try {
-      const response = await axios.post('http://localhost:5000/api/qr/generate', { text })
+      const response = await axiosInstance.post('/api/qr/generate', { text })
       setQrImageUrl(response.data.qrImageUrl)
     } catch (err) {
       setError('Failed to generate QR code. Try again later.')

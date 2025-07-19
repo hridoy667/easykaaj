@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const QRCode = require('qrcode');
 
-router.post('/qr/generate', async (req, res) => {
+router.post('/generate', async (req, res) => {
   const { text } = req.body;
 
   if (!text) {
