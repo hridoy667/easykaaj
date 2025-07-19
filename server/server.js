@@ -14,9 +14,23 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-// Enable CORS for frontend
+// Allowed frontend origins
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://easykaj.netlify.app'
+];
+
+// Enable CORS for frontend with multiple allowed origins
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // allow requests with no origin like mobile apps or curl
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS policy: Origin ${origin} not allowed`));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   optionsSuccessStatus: 200,
 }));
@@ -39,7 +53,6 @@ app.use(limiter);
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ Connected to MongoDB Atlas'))
   .catch((err) => console.error('❌ MongoDB connection error:', err));
-
 
 // === Test Routes ===
 app.get('/api/ping', (req, res) => {
@@ -93,6 +106,9 @@ app.use((req, res) => {
 // === Global Error Handler ===
 app.use((err, req, res, next) => {
   console.error('🔥 Internal Error:', err.stack);
+  if (err.message && err.message.startsWith('CORS policy')) {
+    return res.status(403).json({ error: err.message });
+  }
   res.status(500).json({ error: 'Internal Server Error.' });
 });
 
