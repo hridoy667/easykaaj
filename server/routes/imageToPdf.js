@@ -7,7 +7,7 @@ const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-router.post('/image-to-pdf', upload.array('images'), async (req, res) => {
+router.post('/', upload.array('images'), async (req, res) => {  
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'No images uploaded' });
@@ -16,7 +16,7 @@ router.post('/image-to-pdf', upload.array('images'), async (req, res) => {
     const pdfDoc = await PDFDocument.create();
 
     for (const file of req.files) {
-      const format = file.mimetype.split('/')[1]; // e.g., 'jpeg' or 'png'
+      const format = file.mimetype.split('/')[1];
       const imageBuffer = await sharp(file.buffer).resize({ width: 800 }).toBuffer();
 
       let embeddedImage;

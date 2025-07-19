@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
-import axios from 'axios';
-import { FaUpload, FaFilePdf, FaCopy } from 'react-icons/fa';
+import axiosInstance from '../axiosInstance';
+import { FaUpload, FaCopy } from 'react-icons/fa';
 
 export default function PDFTextExtractor() {
   const [file, setFile] = useState(null);
@@ -8,7 +8,6 @@ export default function PDFTextExtractor() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [dragActive, setDragActive] = useState(false);
-
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
@@ -28,7 +27,7 @@ export default function PDFTextExtractor() {
     e.preventDefault();
     setDragActive(false);
     const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile.type === 'application/pdf') {
+    if (droppedFile?.type === 'application/pdf') {
       setFile(droppedFile);
       setError('');
       setExtractedText('');
@@ -57,11 +56,12 @@ export default function PDFTextExtractor() {
     setExtractedText('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/pdf-extract/extract-text', formData, {
+      const response = await axiosInstance.post('/api/pdf-extract/extract-text', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       setExtractedText(response.data.text);
     } catch (err) {
+      console.error(err);
       setError('❌ Failed to extract text. Please try again.');
     } finally {
       setLoading(false);
