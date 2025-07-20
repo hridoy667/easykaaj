@@ -10,7 +10,7 @@ export default function FeedbackForm() {
     if (!feedback.trim()) return setStatus('Please enter feedback.');
 
     try {
-      const res = await axios.post('/api/feedback/feedback', { feedback }); // ✅ relative to backend baseURL
+      const res = await axios.post('/api/feedback', { feedback });
       if (res.status === 200) {
         setStatus('✅ Thanks for your feedback!');
         setFeedback('');

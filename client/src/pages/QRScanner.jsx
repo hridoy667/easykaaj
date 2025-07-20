@@ -15,9 +15,9 @@ export default function QRScanner() {
   const [showCamera, setShowCamera] = useState(false);
   const [hasScanned, setHasScanned] = useState(false);
 
-  const videoRef = useRef(null);     // Used by QRReader
-  const streamRef = useRef(null);    // Tracks QRReader stream
-  const previewRef = useRef(null);   // Preview camera manually
+  const videoRef = useRef(null);     
+  const streamRef = useRef(null);    
+  const previewRef = useRef(null);   
 
   // Manually stop all camera streams
   const stopCamera = useCallback(() => {
