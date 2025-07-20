@@ -6,7 +6,7 @@ import { QrReader } from '@blackbox-vision/react-qr-reader';
 export default function QRScanner() {
   const location = useLocation();
   const initialPath = location.pathname;
-  
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [scanResult, setScanResult] = useState('');
   const [error, setError] = useState('');
@@ -15,26 +15,41 @@ export default function QRScanner() {
   const [showCamera, setShowCamera] = useState(false);
   const [hasScanned, setHasScanned] = useState(false);
 
-  const videoRef = useRef(null);
-  const streamRef = useRef(null);
+  const videoRef = useRef(null);     // Used by QRReader
+  const streamRef = useRef(null);    // Tracks QRReader stream
+  const previewRef = useRef(null);   // Preview camera manually
 
-  // Stop camera stream manually
+  // Manually stop all camera streams
   const stopCamera = useCallback(() => {
     if (streamRef.current) {
-      const tracks = streamRef.current.getTracks();
-      tracks.forEach((track) => track.stop());
+      streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
     }
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
+    if (previewRef.current) {
+      previewRef.current.srcObject = null;
+    }
   }, []);
 
-  // Track the stream when it becomes available
+  // Start preview on camera open
+  const startCameraPreview = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      if (previewRef.current) {
+        previewRef.current.srcObject = stream;
+      }
+    } catch (err) {
+      console.error('Camera preview error:', err);
+      setCameraError('Could not access camera preview.');
+    }
+  };
+
+  // Watch for QRReader internal stream change
   const handleVideoRef = useCallback((ref) => {
     if (ref) {
       videoRef.current = ref.video;
-      // Listen for when the stream is attached to the video element
       const observer = new MutationObserver(() => {
         if (ref.video.srcObject && ref.video.srcObject !== streamRef.current) {
           streamRef.current = ref.video.srcObject;
@@ -45,7 +60,6 @@ export default function QRScanner() {
     }
   }, []);
 
-  // Refresh on unmount if navigating away
   useEffect(() => {
     return () => {
       stopCamera();
@@ -55,10 +69,11 @@ export default function QRScanner() {
     };
   }, [initialPath, stopCamera]);
 
-  // Also stop when hiding camera manually
   useEffect(() => {
     if (!showCamera) {
       stopCamera();
+    } else {
+      startCameraPreview();
     }
   }, [showCamera, stopCamera]);
 
@@ -94,7 +109,7 @@ export default function QRScanner() {
       setHasScanned(true);
       setCameraResult(result.text || '');
       setCameraError('');
-      setTimeout(() => setShowCamera(false), 1500); // optional auto-close
+      setTimeout(() => setShowCamera(false), 1500); // auto-close
     }
 
     if (err && !cameraError) {
@@ -118,9 +133,7 @@ export default function QRScanner() {
           Scan from Image
         </button>
         {scanResult && (
-          <p className="mt-4 text-green-700 font-semibold break-words">
-            Result: {scanResult}
-          </p>
+          <p className="mt-4 text-green-700 font-semibold break-words">Result: {scanResult}</p>
         )}
         {error && <p className="mt-4 text-red-600 font-semibold">{error}</p>}
       </div>
@@ -146,18 +159,30 @@ export default function QRScanner() {
         )}
 
         {showCamera && (
-          <div className="w-full mb-4">
+          <div className="w-full mb-4 space-y-4">
+            {/* 🔍 Preview Video Feed */}
+            <video
+              ref={previewRef}
+              autoPlay
+              playsInline
+              muted
+              className="w-full rounded border border-gray-400 shadow-md"
+            />
+
+            {/* Hidden QR Reader (processes only) */}
+            {/* Hidden QR Reader (processes only) */}
             <QrReader
               constraints={{ facingMode: 'environment' }}
               onResult={handleScanCamera}
-              containerStyle={{ width: '100%' }}
-              videoStyle={{ width: '100%' }}
-              videoContainerStyle={{ position: 'relative' }}
+              containerStyle={{ width: '0px', height: '0px', overflow: 'hidden' }}
+              videoStyle={{ display: 'none' }}
               videoRef={handleVideoRef}
             />
+
+
             <button
               onClick={() => setShowCamera(false)}
-              className="mt-2 w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition"
+              className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition"
             >
               Close Camera
             </button>
@@ -165,9 +190,7 @@ export default function QRScanner() {
         )}
 
         {cameraResult && (
-          <p className="mt-4 text-green-700 font-semibold break-words">
-            Result: {cameraResult}
-          </p>
+          <p className="mt-4 text-green-700 font-semibold break-words">Result: {cameraResult}</p>
         )}
         {cameraError && <p className="mt-4 text-red-600 font-semibold">{cameraError}</p>}
       </div>
